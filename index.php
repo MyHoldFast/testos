@@ -31,6 +31,6 @@ function cmdexec($cmd)
                  
 }
 
-print_r(cmdexec('php'));
+print_r(cmdexec('php -v'));
 
 ?>
