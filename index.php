@@ -31,6 +31,6 @@ function cmdexec($cmd)
                  
 }
 
-print_r(cmdexec('java'));
+print_r(cmdexec('php'));
 
 ?>
