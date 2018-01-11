@@ -1,3 +1,3 @@
 <?php
-echo "grib";
+echo "grib bleat";
 ?>
