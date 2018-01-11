@@ -1,27 +1,36 @@
 <?php
-header('Content-Type: application/json');
-if(substr($_SERVER['QUERY_STRING'], 0, 7) == 'http://' || substr($_SERVER['QUERY_STRING'], 0, 8) == 'https://'){
-        
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $query = "";
-        foreach ($_POST as $key) {
-            $query .= str_replace(' ', '+', $key);
-        }
-        
-        if($query == "") $query = "";
-        $context = stream_context_create(array(
-        'http' => array(
-            'method' => 'POST',
-            'content' => $query
-        ),
-    )); 
+function cmdexec($cmd)
+{
+
+    ///while (@ ob_end_flush()); // end all output buffers if any
+
+    $proc = popen("$cmd ; echo Exit status : $?", 'r');
+
+    $live_output     = "";
+   $complete_output = "";
+
+    while (!feof($proc))
+    {
+        $live_output     = fread($proc, 4096);
+        $complete_output = $complete_output . $live_output;
+       // echo "$live_output";
+      //  @ flush();
+    }
     
-    //echo '{$query}';
-    
-        echo file_get_contents($_SERVER['QUERY_STRING'], false, $context);    
-        } else {
-             echo file_get_contents($_SERVER['QUERY_STRING']);    
-        }
-    
+
+    pclose($proc);
+
+    // get exit status
+    preg_match('/[0-9]+$/', $complete_output, $matches);
+
+    // return exit status and intended output
+    return array (
+                    'exit_status'  => $matches[0],
+                    'output'       => str_replace("Exit status : " . $matches[0], '', $complete_output)
+                 );
+                 
 }
+
+print_r(cmdexec('java'));
+
 ?>
