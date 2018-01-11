@@ -35,4 +35,6 @@ cmdexec('mkdir test');
 
 print_r(cmdexec('ls'));
 
+print_r(cmdexec('java -version'));
+
 ?>
