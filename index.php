@@ -31,6 +31,7 @@ function cmdexec($cmd)
                  
 }
 
-print_r(cmdexec('php -v'));
+cmdexec('mkdir test');
+print_r(cmdexec('ls'));
 
 ?>
